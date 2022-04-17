@@ -26,6 +26,7 @@ int uptime(void);
 int find_next_prime_number(void);
 int get_call_count(int);
 int get_most_caller(int);
+int wait_for_process(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

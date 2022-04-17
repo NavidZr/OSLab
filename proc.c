@@ -537,7 +537,9 @@ procdump(void)
   }
 }
 
-int find_next_prime_number(int n){
+int 
+find_next_prime_number(int n)
+{
   int is_prime = 0;
   int temp = 1; 
   while(!is_prime){
@@ -556,7 +558,9 @@ int find_next_prime_number(int n){
   return n;
 }
 
-int get_most_caller(int sys_num){
+int 
+get_most_caller(int sys_num)
+{
   struct proc *p;
   int pid_max = -1;
   int cnt_max = -1;
@@ -575,4 +579,43 @@ int get_most_caller(int sys_num){
   }
   release(&ptable.lock);
   return pid_max;
+}
+
+int
+wait_for_process(int proc_pid)
+{
+  struct proc *p;
+  struct proc *curproc = myproc();
+  cprintf("umadam!pid=%d\n", proc_pid);
+  acquire(&ptable.lock);
+  for(;;){
+    cprintf("------in loop!\n");
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->pid != 0)
+        cprintf("         name:%s\n", p->pid);
+      if(p->pid == proc_pid)
+        cprintf("equal!!!!\n");
+      if(p->pid != proc_pid)
+        continue;
+      if(p->state == ZOMBIE){
+        cprintf("hello!!!!\n");
+        kfree(p->kstack);
+        p->kstack = 0;
+        freevm(p->pgdir);
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        p->state = UNUSED;
+        release(&ptable.lock);
+        return proc_pid;
+      }
+    }
+    if(curproc->killed){
+      release(&ptable.lock);
+      return -1;
+    }
+
+    sleep(curproc, &ptable.lock);  //DOC: wait-sleep
+  }
 }
