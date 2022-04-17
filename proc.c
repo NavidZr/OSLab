@@ -140,7 +140,7 @@ userinit(void)
   p->tf->esp = PGSIZE;
   p->tf->eip = 0;  // beginning of initcode.S
   
-  for(int k=0; k < 24; k++)
+  for(int k=0; k < 25; k++)
   	p->syscnt[k] = 0;
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
@@ -586,17 +586,14 @@ wait_for_process(int proc_pid)
 {
   struct proc *p;
   struct proc *curproc = myproc();
-  cprintf("umadam!pid=%d\n", proc_pid);
+  int exist=0;
   acquire(&ptable.lock);
   for(;;){
-    cprintf("------in loop!\n");
+    exist=0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->pid != 0)
-        cprintf("         name:%s\n", p->pid);
-      if(p->pid == proc_pid)
-        cprintf("equal!!!!\n");
       if(p->pid != proc_pid)
         continue;
+      exist = 1;
       if(p->state == ZOMBIE){
         cprintf("hello!!!!\n");
         kfree(p->kstack);
@@ -611,7 +608,7 @@ wait_for_process(int proc_pid)
         return proc_pid;
       }
     }
-    if(curproc->killed){
+    if(!exist || curproc->killed){
       release(&ptable.lock);
       return -1;
     }
