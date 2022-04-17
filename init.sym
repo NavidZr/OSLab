@@ -15,7 +15,7 @@
 00000000 ulib.c
 00000000 printf.c
 00000410 printint
-00000880 digits.1089
+00000880 digits.1091
 00000000 umalloc.c
 00000b34 freep
 00000b38 base
@@ -29,6 +29,7 @@
 00000720 malloc
 000003e3 sleep
 00000363 pipe
+00000403 get_most_caller
 00000373 write
 000003ab fstat
 00000383 kill

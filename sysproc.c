@@ -101,7 +101,18 @@ sys_find_next_prime_number(void)
 int 
 sys_get_call_count(void)
 {
-  int number = myproc()->tf->ebx; //register after eax
-  //cprintf("Kernel: sys_get_call_count() called for number %d\n", number);
-  return get_call_count(number);
+  int  *cnt;
+  int sys_num;
+  struct proc *curproc = myproc();
+  argint(0, &sys_num);
+  cnt = curproc->syscnt;
+  return *(cnt+sys_num-1);
+}
+
+int
+sys_get_most_caller(void)
+{
+  int sys_num;
+  argint(0, &sys_num);
+  return get_most_caller(sys_num);
 }

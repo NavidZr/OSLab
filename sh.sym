@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 sh.c
-00001940 buf.1127
+00001940 buf.1129
 00000000 ulib.c
 00000000 printf.c
 00000e50 printint
-00001358 digits.1089
+00001358 digits.1091
 00000000 umalloc.c
 000019a4 freep
 000019a8 base
@@ -39,6 +39,7 @@
 00000340 fork1
 00000a00 nulterminate
 00000da3 pipe
+00000e43 get_most_caller
 00000110 getcmd
 00000db3 write
 00000deb fstat

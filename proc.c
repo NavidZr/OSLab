@@ -140,7 +140,7 @@ userinit(void)
   p->tf->esp = PGSIZE;
   p->tf->eip = 0;  // beginning of initcode.S
   
-  for(int k=0;k <23;k++)
+  for(int k=0; k < 24; k++)
   	p->syscnt[k] = 0;
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
@@ -556,14 +556,23 @@ int find_next_prime_number(int n){
   return n;
 }
 
-int get_call_count(int n){
-  int  *cnt;
-  struct proc *curproc = myproc();
-  
-  cnt = curproc->syscnt;
-  
-  //cprintf("Kernel: pid=%d %s: sys call with number %d has been called %d times\n",curproc->pid, curproc->name ,n, *(cnt+n-1));
+int get_most_caller(int sys_num){
+  struct proc *p;
+  int pid_max = -1;
+  int cnt_max = -1;
+  acquire(&ptable.lock);
+  cprintf("Kernel: The list of onging processes:\n");
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    int * sys_cnt = p->syscnt;
+    int cnt = *(sys_cnt+sys_num-1);
+    if(p->pid !=0)
+      cprintf("     pid=%d, name: %s \n",p->pid, p->name);
+    if(cnt >= cnt_max){
+      cnt_max = cnt;
+      pid_max = p->pid;
+    }
 
-  return *(cnt+n-1);
+  }
+  release(&ptable.lock);
+  return pid_max;
 }
-

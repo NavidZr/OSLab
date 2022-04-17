@@ -969,10 +969,12 @@ SYSCALL(get_call_count)
  64b:	b8 17 00 00 00       	mov    $0x17,%eax
  650:	cd 40                	int    $0x40
  652:	c3                   	ret    
- 653:	66 90                	xchg   %ax,%ax
- 655:	66 90                	xchg   %ax,%ax
- 657:	66 90                	xchg   %ax,%ax
- 659:	66 90                	xchg   %ax,%ax
+
+00000653 <get_most_caller>:
+SYSCALL(get_most_caller)
+ 653:	b8 18 00 00 00       	mov    $0x18,%eax
+ 658:	cd 40                	int    $0x40
+ 65a:	c3                   	ret    
  65b:	66 90                	xchg   %ax,%ax
  65d:	66 90                	xchg   %ax,%ax
  65f:	90                   	nop

@@ -658,10 +658,12 @@ SYSCALL(get_call_count)
  3fb:	b8 17 00 00 00       	mov    $0x17,%eax
  400:	cd 40                	int    $0x40
  402:	c3                   	ret    
- 403:	66 90                	xchg   %ax,%ax
- 405:	66 90                	xchg   %ax,%ax
- 407:	66 90                	xchg   %ax,%ax
- 409:	66 90                	xchg   %ax,%ax
+
+00000403 <get_most_caller>:
+SYSCALL(get_most_caller)
+ 403:	b8 18 00 00 00       	mov    $0x18,%eax
+ 408:	cd 40                	int    $0x40
+ 40a:	c3                   	ret    
  40b:	66 90                	xchg   %ax,%ax
  40d:	66 90                	xchg   %ax,%ax
  40f:	90                   	nop

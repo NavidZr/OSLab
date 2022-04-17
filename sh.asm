@@ -2021,10 +2021,12 @@ SYSCALL(get_call_count)
      e3b:	b8 17 00 00 00       	mov    $0x17,%eax
      e40:	cd 40                	int    $0x40
      e42:	c3                   	ret    
-     e43:	66 90                	xchg   %ax,%ax
-     e45:	66 90                	xchg   %ax,%ax
-     e47:	66 90                	xchg   %ax,%ax
-     e49:	66 90                	xchg   %ax,%ax
+
+00000e43 <get_most_caller>:
+SYSCALL(get_most_caller)
+     e43:	b8 18 00 00 00       	mov    $0x18,%eax
+     e48:	cd 40                	int    $0x40
+     e4a:	c3                   	ret    
      e4b:	66 90                	xchg   %ax,%ax
      e4d:	66 90                	xchg   %ax,%ax
      e4f:	90                   	nop

@@ -183,6 +183,7 @@ UPROGS=\
 	_zombie\
 	_first_prime_number\
 	_get_call_count\
+	_get_most_caller\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -257,6 +258,7 @@ EXTRA=\
 	.gdbinit.tmpl gdbutil\
 	first_prime_number.c\
 	get_call_count.c\
+	get_most_caller.c\
 
 dist:
 	rm -rf dist

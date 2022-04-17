@@ -11,11 +11,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 ls.c
-00000df4 buf.1100
+00000df4 buf.1102
 00000000 ulib.c
 00000000 printf.c
 00000660 printint
-00000acc digits.1089
+00000acc digits.1091
 00000000 umalloc.c
 00000e04 freep
 00000e08 base
@@ -29,6 +29,7 @@
 00000970 malloc
 00000633 sleep
 000005b3 pipe
+00000653 get_most_caller
 000005c3 write
 000005fb fstat
 000005d3 kill

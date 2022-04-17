@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 usertests.c
-00005f20 args.1453
+00005f20 args.1455
 00000000 ulib.c
 00000000 printf.c
 00003a40 printint
-000055f8 digits.1089
+000055f8 digits.1091
 00000000 umalloc.c
 00005fa0 freep
 00005fa4 base
@@ -43,6 +43,7 @@
 00000eb0 sharedfd
 00005eec randstate
 00003993 pipe
+00003a33 get_most_caller
 00005fc0 uninit
 00002a00 dirfile
 000039a3 write
