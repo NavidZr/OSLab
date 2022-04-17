@@ -591,11 +591,9 @@ wait_for_process(int proc_pid)
   for(;;){
     exist=0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->pid != proc_pid)
-        continue;
-      exist = 1;
-      if(p->state == ZOMBIE){
-        cprintf("hello!!!!\n");
+      if(p->pid == proc_pid)
+        exist = 1;
+      if(p->state == ZOMBIE && p->pid == proc_pid){
         kfree(p->kstack);
         p->kstack = 0;
         freevm(p->pgdir);

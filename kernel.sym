@@ -55,12 +55,12 @@
 80103790 allocproc
 8010a000 first.1630
 8010a5b8 initproc
-80107a78 states.1656
+80107a6c states.1656
 00000000 sleeplock.c
 00000000 spinlock.c
 00000000 string.c
 00000000 syscall.c
-80107b00 syscalls
+80107ae0 syscalls
 00000000 sysfile.c
 80104cf0 create
 80104e90 argfd.constprop.0

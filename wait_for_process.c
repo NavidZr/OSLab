@@ -12,22 +12,17 @@ int main(int argc, char *argv[]){
     if (child_a == 0) {     
         int cnt=0;
         printf(1,"User: child process 1 with pid=%d is working!\n", getpid());
-        while(cnt!=100000)
+        while(cnt!=10000000)
             cnt++;
-        sleep(1000);
         printf(1,"User: child process 1 with pid=%d is done!\n", getpid());
 		exit();
     }
 	else{
 		child_b = fork();
 		if (child_b == 0) {  
-            sleep(10);
-            printf(1,"User: child process 2 with pid=%d is waiting!\n", getpid());
+            sleep(3);
             wait_for_process(child_a_pid);
-	        /*if(wait_for_process(child_a_pid) == -1)
-                printf(1,"User: Waiting failed!");
-            else
-                printf(1,"User: waiting done correctly!");*/
+            printf(1,"User: child process 2 with waiting done correctly!\n");
 			exit();
         }
   	  	else {
