@@ -186,7 +186,8 @@ UPROGS=\
 	_get_most_caller\
 	_wait_for_process\
 	_set_queue\
-
+	_foo\
+	_print_procs\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -264,6 +265,8 @@ EXTRA=\
 	get_most_caller.c\
 	wait_for_process.c\
 	set_queue.c\
+	foo.c\
+	print_procs.c\
 
 dist:
 	rm -rf dist

@@ -21,6 +21,35 @@ extern void trapret(void);
 
 static void wakeup1(void *chan);
 
+int compareStrings(char* x, char* y)
+{
+    int flag = 1;
+ 
+    // Iterate a loop till the end
+    // of both the strings
+    while (*x != '\0' || *y != '\0') {
+        if (*x == *y) {
+            x++;
+            y++;
+        }
+ 
+        // If two characters are not same
+        // print the difference and exit
+        else if ((*x == '\0' && *y != '\0')
+                 || (*x != '\0' && *y == '\0')
+                 || *x != *y) {
+            flag = 0;
+            break;
+        }
+    }
+    cprintf("%s", x);
+    cprintf("/n");
+    cprintf("%s", y);
+    cprintf("/n");
+    cprintf("%d", flag);
+    return flag;
+}
+
 void
 pinit(void)
 {
@@ -90,7 +119,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->priority = 100/p->pid;
-  p->queue = 2;     //FCFS
+  p->queue = (p->pid == 0 || p->pid == 1 || p->pid == 2) ? 1 : 1;     //FCFS
   p->exec_cycle = 0;
   p->last_cpu_time = 0;
   p->exec_cycle_ratio = 1;
@@ -366,32 +395,43 @@ get_queue_string(int queue)
     return "BJF";
 }
 
+int
+get_rank(struct proc* p)
+{
+  int rank = p->priority * p->priority_ratio
+             + p->creation_time * p->arrival_time_ratio
+             + p->exec_cycle * p->exec_cycle_ratio;
+  
+  return rank;
+}
+
 void
 print_procs(void)
 {
   struct proc *p;
-  cprintf("name        pid        state        queue_lvl        exec_cycle*10        arrival_time        rank        priority        ratios(arrival_time,exec_cycle,priority)");
+  cprintf("name          pid          state          queue_lvl      exec_cycle*10     arrival_time      rank           priority    ratios(arrival_time,exec_cycle,priority)");
   cprintf("\n");
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if (p->state == UNUSED)
       continue;
     cprintf(p->name);
-    cprintf("        ");
+    for(int i=0; i<15-strlen(p->name); i++)
+      cprintf(" ");
     cprintf("%d", p->pid);
-    cprintf("        ");
+    cprintf("           ");
     cprintf(get_state_string(p->state));
-    cprintf("        ");
+    cprintf("           ");
     cprintf(get_queue_string(p->queue));
-    cprintf("        ");
+    cprintf("             ");
     cprintf("%d", round(p->exec_cycle * 10));
-    cprintf("        ");
+    cprintf("                ");
     cprintf("%d", p->creation_time);
-    cprintf("        ");
+    cprintf("           ");
     cprintf("%d", get_rank(p));
-    cprintf("        ");
+    cprintf("          ");
     cprintf("%d",p->priority);
-    cprintf("        ");
+    cprintf("                ");
     cprintf("%d", p->arrival_time_ratio);
     cprintf("-");
     cprintf("%d",p->exec_cycle_ratio);
@@ -402,14 +442,7 @@ print_procs(void)
   release(&ptable.lock);
 }
 
-float
-get_rank(struct proc* p)
-{
-  float rank =p->priority * p->priority_ratio
-            + p->creation_time * p->arrival_time_ratio
-            + p->exec_cycle * p->exec_cycle_ratio;
-  return rank;
-}
+
 
 struct proc*
 find_RR(void)
@@ -458,7 +491,7 @@ find_BJF(void)
 {
   struct proc* p;
   struct proc* min_proc = 0;
-  float min_rank = 1000000;
+  int min_rank = 1000000;
 
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){ 
     if (p->state != RUNNABLE || p->queue != 3)
