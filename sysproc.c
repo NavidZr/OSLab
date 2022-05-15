@@ -125,3 +125,12 @@ sys_wait_for_process(void)
   return wait_for_process(pid);
 
 }
+
+void
+sys_set_queue(void)
+{
+  int pid, new_queue;
+  argint(0, &pid);
+  argint(1, &new_queue);
+  set_queue(pid, new_queue);
+}

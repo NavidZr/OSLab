@@ -14,7 +14,7 @@
 00000000 ulib.c
 00000000 printf.c
 000003a0 printint
-00000854 digits.1093
+00000854 digits.1096
 00000000 umalloc.c
 00000afc freep
 00000b00 base
@@ -24,6 +24,7 @@
 0000031b mknod
 00000190 gets
 00000353 getpid
+00000393 set_queue
 000006b0 malloc
 00000363 sleep
 000002e3 pipe

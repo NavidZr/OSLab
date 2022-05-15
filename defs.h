@@ -123,6 +123,7 @@ void            yield(void);
 int             find_next_prime_number(int);
 int             get_most_caller(int);
 int             wait_for_process(int);
+void            set_queue(int, int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

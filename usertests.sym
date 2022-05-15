@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 usertests.c
-00005f20 args.1457
+00005f20 args.1460
 00000000 ulib.c
 00000000 printf.c
 00003a50 printint
-00005608 digits.1093
+00005608 digits.1096
 00000000 umalloc.c
 00005fa0 freep
 00005fa4 base
@@ -32,6 +32,7 @@
 00003a03 getpid
 00000a60 pipe1
 00002c00 iref
+00003a43 set_queue
 00003d60 malloc
 00003a13 sleep
 00000210 exitiputtest

@@ -185,6 +185,7 @@ UPROGS=\
 	_get_call_count\
 	_get_most_caller\
 	_wait_for_process\
+	_set_queue\
 
 
 fs.img: mkfs README $(UPROGS)
@@ -262,6 +263,7 @@ EXTRA=\
 	get_call_count.c\
 	get_most_caller.c\
 	wait_for_process.c\
+	set_queue.c\
 
 dist:
 	rm -rf dist

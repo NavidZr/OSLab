@@ -11,11 +11,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 ls.c
-00000e04 buf.1104
+00000e04 buf.1107
 00000000 ulib.c
 00000000 printf.c
 00000670 printint
-00000adc digits.1093
+00000adc digits.1096
 00000000 umalloc.c
 00000e14 freep
 00000e18 base
@@ -26,6 +26,7 @@
 000005eb mknod
 00000460 gets
 00000623 getpid
+00000663 set_queue
 00000980 malloc
 00000633 sleep
 000005b3 pipe

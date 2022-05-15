@@ -600,10 +600,12 @@ SYSCALL(wait_for_process)
  38b:	b8 19 00 00 00       	mov    $0x19,%eax
  390:	cd 40                	int    $0x40
  392:	c3                   	ret    
- 393:	66 90                	xchg   %ax,%ax
- 395:	66 90                	xchg   %ax,%ax
- 397:	66 90                	xchg   %ax,%ax
- 399:	66 90                	xchg   %ax,%ax
+
+00000393 <set_queue>:
+SYSCALL(set_queue)
+ 393:	b8 1a 00 00 00       	mov    $0x1a,%eax
+ 398:	cd 40                	int    $0x40
+ 39a:	c3                   	ret    
  39b:	66 90                	xchg   %ax,%ax
  39d:	66 90                	xchg   %ax,%ax
  39f:	90                   	nop

@@ -751,10 +751,12 @@ SYSCALL(wait_for_process)
  4ab:	b8 19 00 00 00       	mov    $0x19,%eax
  4b0:	cd 40                	int    $0x40
  4b2:	c3                   	ret    
- 4b3:	66 90                	xchg   %ax,%ax
- 4b5:	66 90                	xchg   %ax,%ax
- 4b7:	66 90                	xchg   %ax,%ax
- 4b9:	66 90                	xchg   %ax,%ax
+
+000004b3 <set_queue>:
+SYSCALL(set_queue)
+ 4b3:	b8 1a 00 00 00       	mov    $0x1a,%eax
+ 4b8:	cd 40                	int    $0x40
+ 4ba:	c3                   	ret    
  4bb:	66 90                	xchg   %ax,%ax
  4bd:	66 90                	xchg   %ax,%ax
  4bf:	90                   	nop

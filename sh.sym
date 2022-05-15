@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 sh.c
-00001960 buf.1131
+00001960 buf.1134
 00000000 ulib.c
 00000000 printf.c
 00000e60 printint
-00001368 digits.1093
+00001368 digits.1096
 00000000 umalloc.c
 000019c4 freep
 000019c8 base
@@ -30,6 +30,7 @@
 00000850 parsepipe
 00000ac0 parsecmd
 00000470 backcmd
+00000e53 set_queue
 00000610 peek
 00000690 parseredirs
 000004b0 gettoken

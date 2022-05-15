@@ -2033,10 +2033,12 @@ SYSCALL(wait_for_process)
      e4b:	b8 19 00 00 00       	mov    $0x19,%eax
      e50:	cd 40                	int    $0x40
      e52:	c3                   	ret    
-     e53:	66 90                	xchg   %ax,%ax
-     e55:	66 90                	xchg   %ax,%ax
-     e57:	66 90                	xchg   %ax,%ax
-     e59:	66 90                	xchg   %ax,%ax
+
+00000e53 <set_queue>:
+SYSCALL(set_queue)
+     e53:	b8 1a 00 00 00       	mov    $0x1a,%eax
+     e58:	cd 40                	int    $0x40
+     e5a:	c3                   	ret    
      e5b:	66 90                	xchg   %ax,%ax
      e5d:	66 90                	xchg   %ax,%ax
      e5f:	90                   	nop

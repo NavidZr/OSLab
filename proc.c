@@ -89,7 +89,15 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p->priority = 100/p->pid;
+  p->queue = 2;     //FCFS
+  p->exec_cycle = 0;
+  p->last_cpu_time = 0;
+  p->exec_cycle_ratio = 1;
+  p->arrival_time_ratio = 1;
+  p->priority_ratio = 1;
+  p->creation_time = ticks;
+  // unlock me!
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -315,6 +323,76 @@ wait(void)
   }
 }
 
+float
+get_rank(struct proc* p)
+{
+  float rank =p->priority * p->priority_ratio
+            + p->creation_time * p->arrival_time_ratio
+            + p->exec_cycle * p->exec_cycle_ratio;
+  return rank;
+}
+
+struct proc*
+find_RR(void)
+{
+  struct proc *p;
+  struct proc *best = 0;
+
+  int now = ticks;
+  int max_proc = -100000;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if(p->state != RUNNABLE || p->queue != 1)
+        continue;
+
+      if(now - p->last_cpu_time > max_proc){
+        max_proc = now - p->last_cpu_time;
+        best = p;
+      }
+  }
+  return best;
+}
+
+struct proc*
+find_FCFS(void)
+{
+  struct proc *p;
+  struct proc *first_proc = 0;
+
+  int first = 2e9;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+      if (p->state != RUNNABLE || p->queue != 2)
+        continue;
+
+      if (p->creation_time < first)
+      {
+        first = p->creation_time;
+        first_proc = p;
+      }
+  }
+  return first_proc;
+}
+
+struct proc*
+find_BJF(void)
+{
+  struct proc* p;
+  struct proc* min_proc = 0;
+  float min_rank = 1000000;
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){ 
+    if (p->state != RUNNABLE || p->queue != 3)
+      continue;
+    if (get_rank(p) < min_rank){
+      min_proc = p;
+      min_rank = get_rank(p);
+    }
+  }
+
+  return min_proc;
+}
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -336,24 +414,36 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->state != RUNNABLE)
-        continue;
+    
+    p = find_RR();
+
+    if (p == 0)
+      p = find_FCFS();
+
+    if (p == 0)
+      p = find_BJF();
+
+    if (p == 0) {
+      release(&ptable.lock);
+      continue;
+    }
+    // for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    //   if(p->state != RUNNABLE)
+    //     continue;
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
-      c->proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
 
-      swtch(&(c->scheduler), p->context);
-      switchkvm();
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
-      c->proc = 0;
-    }
+    c->proc = 0;
     release(&ptable.lock);
 
   }
@@ -391,6 +481,8 @@ yield(void)
 {
   acquire(&ptable.lock);  //DOC: yieldlock
   myproc()->state = RUNNABLE;
+  myproc()->last_cpu_time = ticks;
+  myproc()->exec_cycle += 0.1;
   sched();
   release(&ptable.lock);
 }
@@ -579,6 +671,18 @@ get_most_caller(int sys_num)
   }
   release(&ptable.lock);
   return pid_max;
+}
+
+void
+set_queue(int pid, int new_queue)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid)
+      p->queue = new_queue;
+  }
+  release(&ptable.lock);
 }
 
 int
