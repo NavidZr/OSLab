@@ -119,7 +119,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->priority = 100/p->pid;
-  p->queue = (p->pid == 0 || p->pid == 1 || p->pid == 2) ? 1 : 1;     //FCFS
+  p->queue = (p->pid == 0 || p->pid == 1 || p->pid == 2) ? 1 : 2;     //FCFS
   p->exec_cycle = 0;
   p->last_cpu_time = 0;
   p->exec_cycle_ratio = 1;

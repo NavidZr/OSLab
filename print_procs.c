@@ -7,7 +7,6 @@
 int
 main(int argc, char *argv[])
 {
-  printf(1, "hello inja\n");
   print_procs();
   exit();
 }

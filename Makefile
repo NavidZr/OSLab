@@ -188,6 +188,8 @@ UPROGS=\
 	_set_queue\
 	_foo\
 	_print_procs\
+	_set_global_bjf_params\
+	_set_bjf_params\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -267,6 +269,9 @@ EXTRA=\
 	set_queue.c\
 	foo.c\
 	print_procs.c\
+	set_global_bjf_params.c\
+	set_bjf_params.c\
+
 
 dist:
 	rm -rf dist
