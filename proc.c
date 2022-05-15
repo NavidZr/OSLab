@@ -409,7 +409,7 @@ void
 print_procs(void)
 {
   struct proc *p;
-  cprintf("name          pid          state          queue_lvl      exec_cycle*10     arrival_time      rank           priority    ratios(arrival_time,exec_cycle,priority)");
+  cprintf("name          pid          state          queue_lvl      exec_cycle*10     arrival_time      rank           priority    ratios(priority,arrival_time,exec_cycle)");
   cprintf("\n");
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
@@ -505,6 +505,30 @@ find_BJF(void)
   return min_proc;
 }
 
+void
+move_queues()
+{
+  struct proc* p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){ 
+    if (p->state == RUNNABLE && p->age > 8000){
+      p->age = 0;
+      p->queue = (p->queue == 1) ? 1 : (p->queue-1);
+    }
+  }
+}
+
+void
+update_age(struct proc* p_exec, uint cycles)
+{
+  struct proc* p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){ 
+    if (p->state == RUNNABLE){
+      p->age += cycles;
+    }
+  }
+  p_exec->age = 0;
+}
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -519,6 +543,7 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
+  uint tick1, tick2;
   
   for(;;){
     // Enable interrupts on this processor.
@@ -526,6 +551,7 @@ scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
+    tick1 = ticks;
     
     p = find_RR();
 
@@ -539,6 +565,7 @@ scheduler(void)
       release(&ptable.lock);
       continue;
     }
+    move_queues();
     // for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     //   if(p->state != RUNNABLE)
     //     continue;
@@ -547,12 +574,14 @@ scheduler(void)
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
     c->proc = p;
+
     switchuvm(p);
     p->state = RUNNING;
 
     swtch(&(c->scheduler), p->context);
     switchkvm();
-
+    tick2 = ticks;
+    update_age(p, tick2-tick1);
       // Process is done running for now.
       // It should have changed its p->state before coming back.
     c->proc = 0;
@@ -796,6 +825,35 @@ set_queue(int pid, int new_queue)
   }
   release(&ptable.lock);
 }
+
+void 
+set_global_bjf_params(int p_ratio, int a_ratio, int e_ratio)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    p->arrival_time_ratio = a_ratio;
+    p->exec_cycle_ratio = e_ratio;
+    p->priority_ratio = p_ratio;
+  }
+  release(&ptable.lock);
+}
+
+void 
+set_bjf_params(int pid, int p_ratio, int a_ratio, int e_ratio)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == pid){
+      p->arrival_time_ratio = a_ratio;
+      p->exec_cycle_ratio = e_ratio;
+      p->priority_ratio = p_ratio;
+    }
+  }
+  release(&ptable.lock);
+}
+
 
 int
 wait_for_process(int proc_pid)

@@ -125,6 +125,8 @@ int             get_most_caller(int);
 int             wait_for_process(int);
 void            set_queue(int, int);
 void            print_procs(void);
+void            set_global_bjf_params(int, int, int);
+void            set_bjf_params(int, int, int, int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

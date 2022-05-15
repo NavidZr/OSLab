@@ -109,6 +109,8 @@ extern int sys_get_most_caller(void);
 extern int sys_wait_for_process(void);
 extern int sys_set_queue(void);
 extern int sys_print_procs(void);
+extern int sys_set_global_bjf_params(void);
+extern int sys_set_bjf_params(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -137,7 +139,9 @@ static int (*syscalls[])(void) = {
 [SYS_get_most_caller]          sys_get_most_caller,
 [SYS_wait_for_process]         sys_wait_for_process,
 [SYS_set_queue]                sys_set_queue,      
-[SYS_print_procs]              sys_print_procs,          
+[SYS_print_procs]              sys_print_procs,
+[SYS_set_global_bjf_params]    sys_set_global_bjf_params,
+[SYS_set_bjf_params]           sys_set_bjf_params,
 };
 
 void

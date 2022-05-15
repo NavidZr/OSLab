@@ -26,3 +26,5 @@
 #define SYS_wait_for_process        25
 #define SYS_set_queue               26     
 #define SYS_print_procs             27
+#define SYS_set_global_bjf_params   28
+#define SYS_set_bjf_params          29

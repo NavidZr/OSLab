@@ -140,3 +140,24 @@ sys_print_procs(void)
 {
   print_procs();
 }
+
+void
+sys_set_global_bjf_params(void)
+{
+  int p_ratio, a_ratio, e_ratio;
+  argint(0, &p_ratio);
+  argint(1, &a_ratio);
+  argint(2, &e_ratio);
+  set_global_bjf_params(p_ratio, a_ratio, e_ratio);
+}
+
+void
+sys_set_bjf_params(void)
+{
+  int pid, p_ratio, a_ratio, e_ratio;
+  argint(0, &pid);
+  argint(1, &p_ratio);
+  argint(2, &a_ratio);
+  argint(3, &e_ratio);
+  set_bjf_params(pid, p_ratio, a_ratio, e_ratio);
+}
