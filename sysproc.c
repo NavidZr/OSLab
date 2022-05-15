@@ -134,3 +134,9 @@ sys_set_queue(void)
   argint(1, &new_queue);
   set_queue(pid, new_queue);
 }
+
+void
+sys_print_procs(void)
+{
+  print_procs();
+}

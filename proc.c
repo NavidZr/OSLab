@@ -323,6 +323,85 @@ wait(void)
   }
 }
 
+int round(float num){
+  if(num - (int)(num) <= 0.5)
+    return (int)(num);
+  return (int)(num) + 1;
+}
+
+char*
+get_state_string(int state)
+{
+  if (state == 0) {
+    return "UNUSED";
+  }
+  else if (state == 1) {
+    return "EMBRYO";
+  }
+  else if (state == 2) {
+    return "SLEEPING";
+  }
+  else if (state == 3) {
+    return "RUNNABLE";
+  }
+  else if (state == 4) {
+    return "RUNNING";
+  }
+  else if (state == 5) {
+    return "ZOMBIE";
+  }
+  else {
+    return "";
+  }
+}
+
+char*
+get_queue_string(int queue)
+{
+  if (queue == 1)
+    return "RR";
+  else if (queue == 2)
+    return "FCFS";
+  else
+    return "BJF";
+}
+
+void
+print_procs(void)
+{
+  struct proc *p;
+  cprintf("name        pid        state        queue_lvl        exec_cycle*10        arrival_time        rank        priority        ratios(arrival_time,exec_cycle,priority)");
+  cprintf("\n");
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if (p->state == UNUSED)
+      continue;
+    cprintf(p->name);
+    cprintf("        ");
+    cprintf("%d", p->pid);
+    cprintf("        ");
+    cprintf(get_state_string(p->state));
+    cprintf("        ");
+    cprintf(get_queue_string(p->queue));
+    cprintf("        ");
+    cprintf("%d", round(p->exec_cycle * 10));
+    cprintf("        ");
+    cprintf("%d", p->creation_time);
+    cprintf("        ");
+    cprintf("%d", get_rank(p));
+    cprintf("        ");
+    cprintf("%d",p->priority);
+    cprintf("        ");
+    cprintf("%d", p->arrival_time_ratio);
+    cprintf("-");
+    cprintf("%d",p->exec_cycle_ratio);
+    cprintf("-");
+    cprintf("%d",p->priority_ratio);
+    cprintf("\n");
+  }    
+  release(&ptable.lock);
+}
+
 float
 get_rank(struct proc* p)
 {
