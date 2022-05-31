@@ -15,6 +15,7 @@ initlock(struct spinlock *lk, char *name)
   lk->name = name;
   lk->locked = 0;
   lk->cpu = 0;
+  lk->lock_holder_pid = -1;
 }
 
 // Acquire the lock.
@@ -25,8 +26,21 @@ void
 acquire(struct spinlock *lk)
 {
   pushcli(); // disable interrupts to avoid deadlock.
-  if(holding(lk))
+
+  uint cur_proc_pid = 1;
+  if (myproc() != NULL)
+    cur_proc_pid = myproc()->pid;
+  
+  if (holding(lk) && lk->lock_holder_pid == cur_proc_pid)
+  {
+    popcli();
+    return;
+  }
+  if(holding(lk) && lk->lock_holder_pid != cur_proc_pid)
     panic("acquire");
+  
+  // if(holding(lk))
+  //   panic("acquire");
 
   // The xchg is atomic.
   while(xchg(&lk->locked, 1) != 0)
