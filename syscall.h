@@ -28,3 +28,6 @@
 #define SYS_print_procs             27
 #define SYS_set_global_bjf_params   28
 #define SYS_set_bjf_params          29
+#define SYS_sem_init                30
+#define SYS_sem_acquire             31
+#define SYS_sem_release             32

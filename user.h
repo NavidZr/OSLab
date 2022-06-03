@@ -31,6 +31,9 @@ void set_queue(int, int);
 void print_procs(void);
 void set_global_bjf_params(int,int,int);
 void set_bjf_params(int,int,int,int);
+int sem_init(int,int);
+int sem_acquire(int);
+int sem_release(int);
 
 // ulib.c
 int stat(const char*, struct stat*);

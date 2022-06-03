@@ -190,6 +190,7 @@ UPROGS=\
 	_print_procs\
 	_set_global_bjf_params\
 	_set_bjf_params\
+	_sem_test\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -271,6 +272,7 @@ EXTRA=\
 	print_procs.c\
 	set_global_bjf_params.c\
 	set_bjf_params.c\
+	sem_test.c
 
 
 dist:

@@ -161,3 +161,31 @@ sys_set_bjf_params(void)
   argint(3, &e_ratio);
   set_bjf_params(pid, p_ratio, a_ratio, e_ratio);
 }
+
+int
+sys_sem_init(void) 
+{
+  int i, v;
+  argint(0, &i);
+  argint(1, &v);
+
+  return sem_init(i, v);
+}
+
+int
+sys_sem_acquire(void) 
+{
+  int i;
+  argint(0, &i);
+
+  return sem_acquire(i);
+}
+
+int
+sys_sem_release(void) 
+{
+  int i;
+  argint(0, &i);
+
+  return sem_release(i);
+}
