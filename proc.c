@@ -15,6 +15,8 @@ struct {
 
 static struct proc *initproc;
 
+struct spinlock reentrant_lock;
+
 struct semaphore
 {
   int max_procs;
@@ -947,6 +949,59 @@ sem_release(int i)
   
   return 1;
 }
+
+// int first_func(int n)
+// {
+//     int temp = n;
+//     acquire
+//     if (n == 0){
+//         cprintf("first func done\n");
+//         release(&reentrant_lock);
+//         return 1;
+//     }
+//     printf(1,"first func run number %d \n",n);
+//     temp--;
+//     first_func(temp);
+//     return 0;
+// }
+
+
+// int second_func(int n)
+// {
+//     int temp = n;
+//     acquire_rl();
+//     if (n == 0){
+//         printf(1,"second func done\n");
+//         release_rl();
+//         return 1;
+//     }
+//     printf(1,"sec func run number %d \n",n);
+//     temp--;
+//     second_func(temp);
+//     return 0;
+// }
+
+void
+initlock_rl()
+{
+  initlock(&reentrant_lock,"reentrant_lock");
+  cprintf("lock initiated\n");
+}
+
+void 
+acquire_rl()
+{
+  acquire(&reentrant_lock);
+  cprintf("lock acquired\n");
+}
+
+void
+release_rl()
+{
+  release(&reentrant_lock);
+  cprintf("lock released\n");
+}
+
 
 int
 wait_for_process(int proc_pid)

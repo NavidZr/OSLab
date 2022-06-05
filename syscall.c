@@ -114,6 +114,9 @@ extern int sys_set_bjf_params(void);
 extern int sys_sem_init(void);
 extern int sys_sem_acquire(void);
 extern int sys_sem_release(void);
+extern int sys_initlock_rl(void);
+extern int sys_acquire_rl(void);
+extern int sys_release_rl(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -148,6 +151,9 @@ static int (*syscalls[])(void) = {
 [SYS_sem_init]                 sys_sem_init,
 [SYS_sem_acquire]              sys_sem_acquire,
 [SYS_sem_release]              sys_sem_release,
+[SYS_initlock_rl]              sys_initlock_rl,
+[SYS_acquire_rl]               sys_acquire_rl,
+[SYS_release_rl]               sys_release_rl,
 };
 
 void

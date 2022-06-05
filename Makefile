@@ -191,6 +191,7 @@ UPROGS=\
 	_set_global_bjf_params\
 	_set_bjf_params\
 	_sem_test\
+	_reentrant_mutex\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -272,7 +273,8 @@ EXTRA=\
 	print_procs.c\
 	set_global_bjf_params.c\
 	set_bjf_params.c\
-	sem_test.c
+	sem_test.c\
+	reentrant_mutex.c\
 
 
 dist:

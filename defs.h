@@ -130,6 +130,9 @@ void            set_bjf_params(int, int, int, int);
 int             sem_init(int, int);
 int             sem_acquire(int);
 int             sem_release(int);
+void            initlock_rl(void);
+void            acquire_rl(void);
+void            release_rl(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

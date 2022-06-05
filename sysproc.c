@@ -189,3 +189,21 @@ sys_sem_release(void)
 
   return sem_release(i);
 }
+
+void
+sys_initlock_rl(void)
+{
+  initlock_rl();
+}
+
+void
+sys_acquire_rl(void)
+{
+  acquire_rl();
+}
+
+void
+sys_release_rl(void)
+{
+  release_rl();
+}

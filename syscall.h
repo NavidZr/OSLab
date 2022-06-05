@@ -31,3 +31,6 @@
 #define SYS_sem_init                30
 #define SYS_sem_acquire             31
 #define SYS_sem_release             32
+#define SYS_initlock_rl             33
+#define SYS_acquire_rl              34
+#define SYS_release_rl              35
