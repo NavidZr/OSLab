@@ -37,6 +37,7 @@ consumer()
   int i = 0;
 
   while(i++ < 10) {
+    sleep(5);
     sem_acquire(FULL);
     sem_acquire(MUTEX);
 

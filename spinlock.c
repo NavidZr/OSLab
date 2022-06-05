@@ -66,6 +66,7 @@ release(struct spinlock *lk)
 
   lk->pcs[0] = 0;
   lk->cpu = 0;
+  lk->lock_holder_pid = -1;
 
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that all the stores in the critical
