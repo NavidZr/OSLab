@@ -37,14 +37,19 @@ int second_func(int n)
 
 int main(int argc, char *argv[])
 {
-    initlock_rl();
-    printf(1,"reentrant mutex test\n");
     if(fork() == 0)
-        first_func(10);
-    else
-    {
+        initlock_rl();
+    else{
         sleep(5);
-        second_func(10);
+        acquire_rl();
     }
+    // printf(1,"reentrant mutex test\n");
+    // if(fork() == 0)
+    //     first_func(10);
+    // else
+    // {
+    //     sleep(5);
+    //     second_func(10);
+    // }
     return 0;
 }

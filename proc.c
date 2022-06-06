@@ -950,49 +950,52 @@ sem_release(int i)
   return 1;
 }
 
-// int first_func(int n)
-// {
-//     int temp = n;
-//     acquire
-//     if (n == 0){
-//         cprintf("first func done\n");
-//         release(&reentrant_lock);
-//         return 1;
-//     }
-//     printf(1,"first func run number %d \n",n);
-//     temp--;
-//     first_func(temp);
-//     return 0;
-// }
+int first_func(int n)
+{
+    int temp = n;
+    acquire(&reentrant_lock);
+    if (n == 0){
+        cprintf("first func done\n");
+        release(&reentrant_lock);
+        return 1;
+    }
+    cprintf("first func run number %d \n",n);
+    temp--;
+    return first_func(temp);
+    
+}
 
 
-// int second_func(int n)
-// {
-//     int temp = n;
-//     acquire_rl();
-//     if (n == 0){
-//         printf(1,"second func done\n");
-//         release_rl();
-//         return 1;
-//     }
-//     printf(1,"sec func run number %d \n",n);
-//     temp--;
-//     second_func(temp);
-//     return 0;
-// }
+int second_func(int n)
+{
+    int temp = n;
+    acquire(&reentrant_lock);
+    if (n == 0){
+        cprintf("second func done\n");
+        release(&reentrant_lock);
+        return 1;
+    }
+    cprintf("sec func run number %d \n",n);
+    temp--;
+    return second_func(temp);
+    
+}
 
 void
 initlock_rl()
 {
+  //cprintf("reentrant mutex test\n");
   initlock(&reentrant_lock,"reentrant_lock");
   cprintf("lock initiated\n");
+  
+  first_func(10);
+  
 }
 
 void 
 acquire_rl()
 {
-  acquire(&reentrant_lock);
-  cprintf("lock acquired\n");
+  second_func(10);
 }
 
 void

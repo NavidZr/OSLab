@@ -34,6 +34,7 @@ acquire(struct spinlock *lk)
   
   if (holding(lk) && lk->lock_holder_pid == cur_proc_pid)
   {
+    // cprintf("bkhoda daste mane \n");
     popcli();
     return;
   }
@@ -47,6 +48,7 @@ acquire(struct spinlock *lk)
   while(xchg(&lk->locked, 1) != 0)
     ;
 
+  lk-> lock_holder_pid = cur_proc_pid;
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that the critical section's memory
   // references happen after the lock is acquired.
@@ -54,6 +56,7 @@ acquire(struct spinlock *lk)
 
   // Record info about lock acquisition for debugging.
   lk->cpu = mycpu();
+
   getcallerpcs(&lk, lk->pcs);
 }
 
