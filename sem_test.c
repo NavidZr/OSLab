@@ -19,7 +19,8 @@ void
 producer()
 {
   int i = 0;
-  while (i++ < 10) {
+  while (i < 20) {
+    i++;
     sem_acquire(EMPTY);
     sem_acquire(MUTEX);
 
@@ -36,8 +37,9 @@ consumer()
 {
   int i = 0;
 
-  while(i++ < 10) {
+  while(i < 20) {
     sleep(5);
+    i++; 
     sem_acquire(FULL);
     sem_acquire(MUTEX);
 
@@ -61,5 +63,6 @@ main(int argc, char *argv[])
   else
     producer();
 
+  wait();
   exit();
 }

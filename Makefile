@@ -181,7 +181,6 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
-	_first_prime_number\
 	_get_call_count\
 	_get_most_caller\
 	_wait_for_process\
@@ -191,7 +190,9 @@ UPROGS=\
 	_set_global_bjf_params\
 	_set_bjf_params\
 	_sem_test\
-	_reentrant_mutex\
+	_mutex_test\
+
+	#_first_prime_number\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -264,7 +265,6 @@ EXTRA=\
 	printf.c umalloc.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
-	first_prime_number.c\
 	get_call_count.c\
 	get_most_caller.c\
 	wait_for_process.c\
@@ -274,7 +274,10 @@ EXTRA=\
 	set_global_bjf_params.c\
 	set_bjf_params.c\
 	sem_test.c\
-	reentrant_mutex.c\
+	mutex_test.c\
+
+	#first_prime_number.c\
+
 
 
 dist:

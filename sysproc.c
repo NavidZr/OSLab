@@ -190,20 +190,26 @@ sys_sem_release(void)
   return sem_release(i);
 }
 
-void
-sys_initlock_rl(void)
+int
+sys_mutex_init(void) 
 {
-  initlock_rl();
+  int i;
+  argint(0, &i);
+  return mutex_init(i);
 }
 
-void
-sys_acquire_rl(void)
+int
+sys_mutex_acquire(void) 
 {
-  acquire_rl();
+  int i;
+  argint(0, &i);
+  return mutex_acquire(i);
 }
 
-void
-sys_release_rl(void)
+int
+sys_mutex_release(void) 
 {
-  release_rl();
+  int i;
+  argint(0, &i);
+  return mutex_release(i);
 }

@@ -15,8 +15,6 @@ struct {
 
 static struct proc *initproc;
 
-struct spinlock reentrant_lock;
-
 struct semaphore
 {
   int max_procs;
@@ -24,6 +22,13 @@ struct semaphore
   struct spinlock lock;
   struct proc* queue[NPROC];
 } semaphores[SEMAPHORE_COUNT];
+
+struct mutex
+{
+  int curr_pid;
+  struct spinlock lock;
+  int waiting;
+} mutexes[MUTEX_COUNT];
 
 int nextpid = 1;
 extern void forkret(void);
@@ -921,10 +926,11 @@ sem_acquire(int i)
   acquire(&(semaphores[i].lock));
   if (semaphores[i].curr_procs < semaphores[i].max_procs) {
     semaphores[i].curr_procs += 1;
+    //cprintf("Process %d currproc = %d\n", p->pid, semaphores[i].curr_procs);
   }
   else {
     add_to_sem_queue(i, p);
-    cprintf("Process %d going to sleep\n", p->pid);
+    //cprintf("Process %d going to sleep\n", p->pid);
     sleep(p, &(semaphores[i].lock));
     semaphores[i].curr_procs += 1;
   }
@@ -938,70 +944,68 @@ sem_release(int i)
 {
   struct proc* p = 0;
   acquire(&(semaphores[i].lock));
-  
-  semaphores[i].curr_procs -= 1;
+  if(semaphores[i].curr_procs > 0)
+    semaphores[i].curr_procs -= 1;
   p = pop_sem_queue(i);
   release(&(semaphores[i].lock));
   if (p != 0) {
-    cprintf("Process %d is waking up\n", p->pid);
+    //cprintf("Process %d is waking up\n", p->pid);
     wakeup(p);
   }
   
   return 1;
 }
 
-// int first_func(int n)
-// {
-//     int temp = n;
-//     acquire
-//     if (n == 0){
-//         cprintf("first func done\n");
-//         release(&reentrant_lock);
-//         return 1;
-//     }
-//     printf(1,"first func run number %d \n",n);
-//     temp--;
-//     first_func(temp);
-//     return 0;
-// }
-
-
-// int second_func(int n)
-// {
-//     int temp = n;
-//     acquire_rl();
-//     if (n == 0){
-//         printf(1,"second func done\n");
-//         release_rl();
-//         return 1;
-//     }
-//     printf(1,"sec func run number %d \n",n);
-//     temp--;
-//     second_func(temp);
-//     return 0;
-// }
-
-void
-initlock_rl()
-{
-  initlock(&reentrant_lock,"reentrant_lock");
-  cprintf("lock initiated\n");
+int
+mutex_init(int i) 
+{ 
+  mutexes[i].curr_pid = 0;
+  mutexes[i].waiting = -1;
+  initlock(&(mutexes[i].lock), (char*)i + '0');
+  return 1;
 }
 
-void 
-acquire_rl()
+int 
+mutex_acquire(int i)
 {
-  acquire(&reentrant_lock);
-  cprintf("lock acquired\n");
+  struct proc* p = myproc();
+  
+  if (p->pid == mutexes[i].curr_pid) {
+    return 0;
+  }
+  else if(mutexes[i].curr_pid == 0){
+    mutexes[i].curr_pid = p->pid;
+    cprintf("inja\n");
+  }
+  else {
+    acquire(&(mutexes[i].lock));
+    mutexes[i].waiting = 1;
+    while(mutexes[i].curr_pid != 0)
+      sleep(&mutexes[i], &(mutexes[i].lock));
+    mutexes[i].curr_pid = p->pid;
+    mutexes[i].waiting = -1;
+    release(&(mutexes[i].lock));
+  }
+  
+  return 1;
 }
 
-void
-release_rl()
+int 
+mutex_release(int i)
 {
-  release(&reentrant_lock);
-  cprintf("lock released\n");
+  struct proc* p = myproc();
+  if (p->pid != mutexes[i].curr_pid)
+    return 0;
+  else{
+    acquire(&(mutexes[i].lock));
+    if(mutexes[i].waiting == 1){
+      wakeup(&mutexes[i]);
+    }
+    mutexes[i].curr_pid = 0;
+    release(&(mutexes[i].lock));
+  }
+  return 1;
 }
-
 
 int
 wait_for_process(int proc_pid)
