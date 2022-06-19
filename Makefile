@@ -146,7 +146,7 @@ vectors.S: vectors.pl
 ULIB = ulib.o usys.o printf.o umalloc.o
 
 _%: %.o $(ULIB)
-	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
+	$(LD) $(LDFLAGS) -N -e main -Ttext 0x1000 -o $@ $^
 	$(OBJDUMP) -S $@ > $*.asm
 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
 
@@ -185,12 +185,13 @@ UPROGS=\
 	_get_most_caller\
 	_wait_for_process\
 	_set_queue\
-	_foo\
 	_print_procs\
 	_set_global_bjf_params\
 	_set_bjf_params\
 	_sem_test\
 	_mutex_test\
+	_nullderef\
+	_mprotect_test\
 
 	#_first_prime_number\
 
@@ -269,12 +270,13 @@ EXTRA=\
 	get_most_caller.c\
 	wait_for_process.c\
 	set_queue.c\
-	foo.c\
 	print_procs.c\
 	set_global_bjf_params.c\
 	set_bjf_params.c\
 	sem_test.c\
 	mutex_test.c\
+	nullderef.c\
+	mprotect_test.c\
 
 	#first_prime_number.c\
 

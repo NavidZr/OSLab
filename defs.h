@@ -133,6 +133,10 @@ int             sem_release(int);
 int             mutex_init(int);
 int             mutex_acquire(int);
 int             mutex_release(int);
+// VM
+int             mprotect(void *, int);
+int             munprotect(void *, int);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);

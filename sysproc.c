@@ -213,3 +213,23 @@ sys_mutex_release(void)
   argint(0, &i);
   return mutex_release(i);
 }
+
+int
+sys_mprotect(void)
+{
+  void *addr;
+  int len;
+  argptr(0, (void*)&addr, sizeof(addr));
+  argint(1, &len);
+  return mprotect(addr, len);
+}
+
+int
+sys_munprotect(void)
+{
+  void *addr;
+  int len;
+  argptr(0, (void*)&addr, sizeof(addr));
+  argint(1, &len);
+  return munprotect(addr, len);
+}

@@ -37,6 +37,8 @@ int sem_release(int);
 int mutex_init(int);
 int mutex_acquire(int);
 int mutex_release(int);
+int mprotect(void*, int);
+int munprotect(void*, int);
 
 // ulib.c
 int stat(const char*, struct stat*);
